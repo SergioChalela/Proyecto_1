@@ -3,9 +3,7 @@ import random
 
 def mensaje_bienvenida():
     print("Bienvenidos al juego con fallos de Barcos!!!")
-mensaje_bienvenida()
 
-mensaje_bienvenida()
 
 tablero = np.full((10,10), "_")
 
@@ -90,4 +88,3 @@ def disparar(casilla, tablero):
 
 def mensaje_despedida():
     print("Gracias por jugar. Regresa en 12 semanas a jugar FIFA!!! con fallos")
-mensaje_despedida()
