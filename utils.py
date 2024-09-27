@@ -4,87 +4,81 @@ import random
 def mensaje_bienvenida():
     print("Bienvenidos al juego con fallos de Barcos!!!")
 
+def crear_tablero(tamaño=10):
+    return np.full((tamaño, tamaño), "_")
 
-tablero = np.full((10,10), "_")
-
-fila = random.randint(0,9)
-columna = random.randint(0,9)
-casilla_1 = (fila,columna)
-orientacion = random.choice(["Vertical","Horizontal"])
-print(casilla_1)
-print(orientacion)
+def mostrar_tablero(tablero):
+    for fila in tablero:
+        print(" ".join(fila))
+    print()
 
 def crear_barco(eslora):
-    casilla_0 = (random.randint(0, 9), random.randint(0, 9))
     orientacion = random.choice(["Vertical", "Horizontal"])
+    
+    if orientacion == "Vertical":
+        fila_inicial = random.randint(0, 10 - eslora)
+        columna_inicial = random.randint(0, 9)
+        barco = [(fila_inicial + i, columna_inicial) for i in range(eslora)]
+    else:
+        fila_inicial = random.randint(0, 9)
+        columna_inicial = random.randint(0, 10 - eslora)
+        barco = [(fila_inicial, columna_inicial + i) for i in range(eslora)]
 
-    barco = [casilla_0]
-    casilla = casilla_0
-    
-    while len(barco) < eslora:
-        if orientacion == "Vertical":
-            casilla = (casilla[0] + 1, casilla[1])  # Vertical
-            barco.append(casilla)
-        else:
-            casilla = (casilla[0], casilla[1] + 1)  # Horizontal
-            barco.append(casilla)
-    
     return barco
-
-mi_barco1 = crear_barco(2)
-mi_barco2 = crear_barco(2)
-mi_barco3 = crear_barco(2)
-mi_barco4 = crear_barco(3)
-mi_barco5 = crear_barco(3)
-mi_barco6 = crear_barco(5)
-
-lista_mis_barcos = [mi_barco1, mi_barco2, mi_barco3, mi_barco4, mi_barco5, mi_barco6]
-lista_barcos_maquina = [mi_barco1, mi_barco2, mi_barco3, mi_barco4, mi_barco5, mi_barco6]
 
 def casillas_libres(barco, tablero):
     for casilla in barco:
         fila, columna = casilla 
-        if fila < 0:    
+        if fila < 0 or fila >= len(tablero) or columna < 0 or columna >= len(tablero):
             return False
-        elif fila >= len(tablero):  
+        if tablero[fila, columna] != "_": 
             return False
-        elif columna < 0:   
-            return False
-        elif columna >= len(tablero):  
-            return False
-        if tablero [fila, columna] != "_": 
-            return False
-        tablero[fila,columna] = "O"
     return True
 
-def colocar_barcos(lista_mis_barcos, tablero):
-    for barco in lista_mis_barcos:
-        if casillas_libres(barco,tablero):
-            print("Casilla libre")
-            for casilla in barco:
-                fila,columna = casilla
-                tablero[fila,columna] = "O"
-        else:
-            print("Casilla no libre, generando nuevo barco")
-            nuevo_barco = crear_barco(len(barco))
+def colocar_barco(barco, tablero):
+    if casillas_libres(barco, tablero):
+        for casilla in barco:
+            fila, columna = casilla
+            tablero[fila, columna] = "O"
+        return True
+    return False
 
-            if casillas_libres(nuevo_barco, tablero):
-                print("Nuevo barco")
-                for casilla in nuevo_barco:
-                    fila,columna = casilla
-                    tablero[fila,columna] = "O"
-            else:
-                print("Nuevo barco no puede proceder")
-    return tablero 
+def colocar_barcos(lista_barcos, tablero):
+    for barco in lista_barcos:
+        intentos = 0
+        colocado = False
+        while not colocado and intentos < 10:
+            colocado = colocar_barco(barco, tablero)
+            if not colocado:
+                barco = crear_barco(len(barco))
+            intentos += 1
+        if not colocado:
+            print("Error: No se pudo colocar el barco después de 10 intentos.")
+    return tablero
 
 def disparar(casilla, tablero):
-    if tablero[casilla] == "O":
+    fila, columna = casilla
+    if tablero[fila, columna] == "O":
         print("Tocado")
-        tablero[casilla] = "X"
+        tablero[fila, columna] = "X"
     else:
         print("Agua")
-        tablero[casilla] = "A"
+        tablero[fila, columna] = "A"
     return tablero
+
+def turno_jugador(tablero):
+    fila = int(input("Introduce la fila (0-9): "))
+    columna = int(input("Introduce la columna (0-9): "))
+    casilla = (fila, columna)
+    disparar(casilla, tablero)
+
+def turno_maquina(tablero):
+    fila = random.randint(0, 9)
+    columna = random.randint(0, 9)
+    casilla = (fila, columna)
+    print(f"La máquina dispara a {casilla}")
+    disparar(casilla, tablero)
 
 def mensaje_despedida():
     print("Gracias por jugar. Regresa en 12 semanas a jugar FIFA!!! con fallos")
+
