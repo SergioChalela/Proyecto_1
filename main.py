@@ -1,3 +1,5 @@
+from utils import mensaje_bienvenida, mensaje_despedida, crear_tablero, colocar_barcos, mostrar_tablero, turno_jugador, turno_maquina
+
 def main():
     mensaje_bienvenida()
 
@@ -8,13 +10,13 @@ def main():
     # Colocar los barcos
     print("Colocando barcos del jugador...")
     colocar_barcos(lista_mis_barcos, tablero_jugador)
-    mostrar_tablero(tablero_jugador)  # Mostrar el tablero después de colocar los barcos
+    mostrar_tablero(tablero_jugador)
 
     print("Colocando barcos de la máquina...")
     colocar_barcos(lista_barcos_maquina, tablero_maquina)
 
     # Turnos de disparo
-    for _ in range(5):  # Ciclo de turnos, ajustable
+    for _ in range(5):
         print("Turno del jugador:")
         turno_jugador(tablero_maquina)
         mostrar_tablero(tablero_maquina)
@@ -25,6 +27,5 @@ def main():
 
     mensaje_despedida()
 
-# Ejecutar la función principal si este archivo es ejecutado directamente
 if __name__ == "__main__":
     main()
