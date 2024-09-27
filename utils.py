@@ -4,6 +4,9 @@ import random
 def mensaje_bienvenida():
     print("Bienvenidos al juego con fallos de Barcos!!!")
 
+def mensaje_despedida():
+    print("Gracias por jugar. Regresa en 12 semanas a jugar FIFA!!! con fallos")
+
 def crear_tablero(tamaño=10):
     return np.full((tamaño, tamaño), "_")
 
@@ -78,7 +81,4 @@ def turno_maquina(tablero):
     casilla = (fila, columna)
     print(f"La máquina dispara a {casilla}")
     disparar(casilla, tablero)
-
-def mensaje_despedida():
-    print("Gracias por jugar. Regresa en 12 semanas a jugar FIFA!!! con fallos")
-
+    

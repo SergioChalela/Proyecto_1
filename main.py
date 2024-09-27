@@ -1,4 +1,4 @@
-from utils import mensaje_bienvenida, mensaje_despedida, crear_tablero, colocar_barcos, mostrar_tablero, turno_jugador, turno_maquina
+from utils import mensaje_bienvenida, mensaje_despedida, crear_tablero, crear_barco, colocar_barcos, mostrar_tablero, turno_jugador, turno_maquina
 
 def main():
     mensaje_bienvenida()
@@ -7,7 +7,14 @@ def main():
     tablero_jugador = crear_tablero()
     tablero_maquina = crear_tablero()
 
-    # Colocar los barcos
+    # Crear los barcos del jugador y la máquina
+    lista_mis_barcos = [crear_barco(2), crear_barco(2), crear_barco(2),
+                        crear_barco(3), crear_barco(3), crear_barco(5)]
+    
+    lista_barcos_maquina = [crear_barco(2), crear_barco(2), crear_barco(2),
+                            crear_barco(3), crear_barco(3), crear_barco(5)]
+
+    # Colocar los barcos en el tablero del jugador y la máquina
     print("Colocando barcos del jugador...")
     colocar_barcos(lista_mis_barcos, tablero_jugador)
     mostrar_tablero(tablero_jugador)
